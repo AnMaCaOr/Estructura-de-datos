@@ -1,0 +1,125 @@
+using System;
+
+namespace FigurasGeometricas
+{
+    // Clase para representar un círculo
+    public class Circulo
+    {
+        // Campo privado para el radio del círculo
+        private double radio;
+
+        // Constructor para inicializar el radio del círculo
+        public Circulo(double radio)
+        {
+            this.radio = radio;
+        }
+
+        // Propiedad para acceder y modificar el radio con validación
+        public double Radio
+        {
+            get { return radio; }
+            set
+            {
+                if (value > 0)
+                {
+                    radio = value;
+                }
+                else
+                {
+                    throw new ArgumentException("El radio debe ser mayor que cero.");
+                }
+            }
+        }
+
+        // Método para calcular el área del círculo (π * r^2)
+        public double CalcularArea()
+        {
+            return Math.PI * Math.Pow(radio, 2);
+        }
+
+        // Método para calcular el perímetro del círculo (2 * π * r)
+        public double CalcularPerimetro()
+        {
+            return 2 * Math.PI * radio;
+        }
+    }
+
+    // Clase para representar un rectángulo
+    public class Rectangulo
+    {
+        // Campos privados para la base y la altura del rectángulo
+        private double baseRectangulo;
+        private double altura;
+
+        // Constructor para inicializar la base y la altura del rectángulo
+        public Rectangulo(double baseRectangulo, double altura)
+        {
+            this.baseRectangulo = baseRectangulo;
+            this.altura = altura;
+        }
+
+        // Propiedades para acceder y modificar la base y la altura con validación
+        public double BaseRectangulo
+        {
+            get { return baseRectangulo; }
+            set
+            {
+                if (value > 0)
+                {
+                    baseRectangulo = value;
+                }
+                else
+                {
+                    throw new ArgumentException("La base debe ser mayor que cero.");
+                }
+            }
+        }
+
+        public double Altura
+        {
+            get { return altura; }
+            set
+            {
+                if (value > 0)
+                {
+                    altura = value;
+                }
+                else
+                {
+                    throw new ArgumentException("La altura debe ser mayor que cero.");
+                }
+            }
+        }
+
+        // Método para calcular el área del rectángulo (base * altura)
+        public double CalcularArea()
+        {
+            return baseRectangulo * altura;
+        }
+
+        // Método para calcular el perímetro del rectángulo (2 * (base + altura))
+        public double CalcularPerimetro()
+        {
+            return 2 * (baseRectangulo + altura);
+        }
+    }
+
+    // Clase principal para probar las figuras geométricas
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Crear una instancia de la clase Circulo y calcular su área y perímetro
+            Circulo circulo = new Circulo(5);
+            Console.WriteLine($"Círculo: Radio = {circulo.Radio}");
+            Console.WriteLine($"Área del círculo: {circulo.CalcularArea():F2}");
+            Console.WriteLine($"Perímetro del círculo: {circulo.CalcularPerimetro():F2}\n");
+
+            // Crear una instancia de la clase Rectangulo y calcular su área y perímetro
+            Rectangulo rectangulo = new Rectangulo(4, 7);
+            Console.WriteLine($"Rectángulo: Base = {rectangulo.BaseRectangulo}, Altura = {rectangulo.Altura}");
+            Console.WriteLine($"Área del rectángulo: {rectangulo.CalcularArea():F2}");
+            Console.WriteLine($"Perímetro del rectángulo: {rectangulo.CalcularPerimetro():F2}");
+        }
+    }
+}
