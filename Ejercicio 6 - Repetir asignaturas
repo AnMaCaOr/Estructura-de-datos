@@ -1,0 +1,56 @@
+//Escribir un programa que almacene las asignaturas de un curso (por ejemplo Matemáticas, Física, Química, Historia y Lengua) en una lista, pregunte al usuario la nota que ha sacado en cada asignatura y elimine de la lista las asignaturas aprobadas. Al final el programa debe mostrar por pantalla las asignaturas que el usuario tiene que repetir.
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Lista de asignaturas
+        List<string> asignaturas = new List<string> { "Matemáticas", "Física", "Química", "Historia", "Lengua" };
+
+        // Diccionario para almacenar las notas
+        Dictionary<string, double> notas = new Dictionary<string, double>();
+
+        Console.WriteLine("Introduce las notas para cada asignatura:");
+
+        // Preguntar al usuario las notas de cada asignatura
+        foreach (string asignatura in asignaturas)
+        {
+            double nota;
+            while (true)
+            {
+                Console.Write($"{asignatura}: ");
+                string input = Console.ReadLine();
+
+                // Validar la entrada
+                if (double.TryParse(input, out nota) && nota >= 0 && nota <= 10)
+                {
+                    notas[asignatura] = nota;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Por favor, introduce una nota válida entre 0 y 10.");
+                }
+            }
+        }
+
+        // Eliminar las asignaturas aprobadas
+        asignaturas.RemoveAll(asignatura => notas[asignatura] >= 5);
+
+        // Mostrar las asignaturas que hay que repetir
+        if (asignaturas.Count > 0)
+        {
+            Console.WriteLine("\nDebes repetir las siguientes asignaturas:");
+            foreach (string asignatura in asignaturas)
+            {
+                Console.WriteLine(asignatura);
+            }
+        }
+        else
+        {
+            Console.WriteLine("\n¡Felicidades! No tienes asignaturas que repetir.");
+        }
+    }
+}
