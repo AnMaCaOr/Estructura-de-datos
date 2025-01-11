@@ -1,0 +1,30 @@
+//Escribir un programa que almacene los vectores (1,2,3) y (-1,0,2) en dos listas y muestre por pantalla su producto escalar.
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Definir los vectores
+        List<int> vector1 = new List<int> { 1, 2, 3 };
+        List<int> vector2 = new List<int> { -1, 0, 2 };
+
+        // Verificar que los vectores tienen la misma dimensión
+        if (vector1.Count != vector2.Count)
+        {
+            Console.WriteLine("Los vectores deben tener la misma dimensión para calcular el producto escalar.");
+            return;
+        }
+
+        // Calcular el producto escalar
+        int productoEscalar = 0;
+        for (int i = 0; i < vector1.Count; i++)
+        {
+            productoEscalar += vector1[i] * vector2[i];
+        }
+
+        // Mostrar el resultado
+        Console.WriteLine($"El producto escalar de los vectores es: {productoEscalar}");
+    }
+}
