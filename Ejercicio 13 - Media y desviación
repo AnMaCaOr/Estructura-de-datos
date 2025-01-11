@@ -1,0 +1,41 @@
+//Escribir un programa que pregunte por una muestra de números, separados por comas, los guarde en una lista y muestre por pantalla su media y desviación típica.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Introduce una muestra de números separados por comas:");
+        string input = Console.ReadLine();
+
+        try
+        {
+            // Convertir la entrada en una lista de números
+            List<double> numeros = input.Split(',')
+                                        .Select(num => double.Parse(num.Trim()))
+                                        .ToList();
+
+            // Calcular la media
+            double media = numeros.Average();
+
+            // Calcular la desviación típica
+            double sumaDesviacionesCuadradas = numeros.Sum(num => Math.Pow(num - media, 2));
+            double desviacionTipica = Math.Sqrt(sumaDesviacionesCuadradas / numeros.Count);
+
+            // Mostrar resultados
+            Console.WriteLine($"Media: {media:F2}");
+            Console.WriteLine($"Desviación Típica: {desviacionTipica:F2}");
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Por favor, introduce solo números separados por comas.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ha ocurrido un error: {ex.Message}");
+        }
+    }
+}
