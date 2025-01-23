@@ -1,0 +1,138 @@
+using System;
+
+namespace CompararListas
+{
+    // Nodo para la lista enlazada
+    public class Nodo
+    {
+        public int Dato { get; set; }
+        public Nodo Siguiente { get; set; }
+
+        public Nodo(int dato)
+        {
+            Dato = dato;
+            Siguiente = null;
+        }
+    }
+
+    // Clase para la lista enlazada
+    public class ListaEnlazada
+    {
+        private Nodo cabeza;
+
+        public ListaEnlazada()
+        {
+            cabeza = null;
+        }
+
+        // Método para agregar un nodo al inicio
+        public void AgregarInicio(int dato)
+        {
+            Nodo nuevoNodo = new Nodo(dato)
+            {
+                Siguiente = cabeza
+            };
+            cabeza = nuevoNodo;
+        }
+
+        // Método para recorrer la lista y mostrar sus elementos
+        public void MostrarLista()
+        {
+            Nodo actual = cabeza;
+            while (actual != null)
+            {
+                Console.Write(actual.Dato + " ");
+                actual = actual.Siguiente;
+            }
+            Console.WriteLine();
+        }
+
+        // Método para obtener el tamaño de la lista
+        public int ObtenerTamanio()
+        {
+            int contador = 0;
+            Nodo actual = cabeza;
+            while (actual != null)
+            {
+                contador++;
+                actual = actual.Siguiente;
+            }
+            return contador;
+        }
+
+        // Método para comparar el contenido con otra lista
+        public bool CompararContenido(ListaEnlazada otraLista)
+        {
+            Nodo actual1 = cabeza;
+            Nodo actual2 = otraLista.cabeza;
+
+            while (actual1 != null && actual2 != null)
+            {
+                if (actual1.Dato != actual2.Dato)
+                {
+                    return false;
+                }
+                actual1 = actual1.Siguiente;
+                actual2 = actual2.Siguiente;
+            }
+
+            // Si ambas listas tienen diferente longitud
+            return actual1 == null && actual2 == null;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ListaEnlazada lista1 = new ListaEnlazada();
+            ListaEnlazada lista2 = new ListaEnlazada();
+
+            Console.WriteLine("Ingrese la cantidad de elementos para la primera lista:");
+            int n1 = int.Parse(Console.ReadLine());
+            Console.WriteLine("Ingrese los elementos de la primera lista:");
+            for (int i = 0; i < n1; i++)
+            {
+                Console.Write($"Elemento {i + 1}: ");
+                int elemento = int.Parse(Console.ReadLine());
+                lista1.AgregarInicio(elemento);
+            }
+
+            Console.WriteLine("Ingrese la cantidad de elementos para la segunda lista:");
+            int n2 = int.Parse(Console.ReadLine());
+            Console.WriteLine("Ingrese los elementos de la segunda lista:");
+            for (int i = 0; i < n2; i++)
+            {
+                Console.Write($"Elemento {i + 1}: ");
+                int elemento = int.Parse(Console.ReadLine());
+                lista2.AgregarInicio(elemento);
+            }
+
+            Console.WriteLine("\nPrimera lista:");
+            lista1.MostrarLista();
+            Console.WriteLine("Segunda lista:");
+            lista2.MostrarLista();
+
+            // Comparar tamaño
+            int tamanio1 = lista1.ObtenerTamanio();
+            int tamanio2 = lista2.ObtenerTamanio();
+
+            if (tamanio1 == tamanio2)
+            {
+                // Comparar contenido
+                if (lista1.CompararContenido(lista2))
+                {
+                    Console.WriteLine("Las listas son iguales en tamaño y contenido.");
+                }
+                else
+                {
+                    Console.WriteLine("Las listas son iguales en tamaño pero no en contenido.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Las listas no tienen el mismo tamaño ni contenido.");
+            }
+        }
+    }
+}
