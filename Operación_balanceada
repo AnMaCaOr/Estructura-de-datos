@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Ejemplo de una expresión matemática balanceada
+        string formula = "{7+(8*5)-[(9-7)+(4+1)]}";
+        
+        // Llamamos a la función para verificar si la fórmula está balanceada
+        if (EsBalanceada(formula))
+        {
+            Console.WriteLine("Fórmula balanceada.");
+        }
+        else
+        {
+            Console.WriteLine("Fórmula no balanceada.");
+        }
+    }
+
+    // Función que verifica si la fórmula está balanceada
+    static bool EsBalanceada(string formula)
+    {
+        // Pila para almacenar los delimitadores de apertura
+        Stack<char> pila = new Stack<char>();
+
+        // Recorremos cada carácter de la fórmula
+        foreach (char c in formula)
+        {
+            // Si es un delimitador de apertura, lo apilamos
+            if (c == '{' || c == '[' || c == '(')
+            {
+                pila.Push(c);
+            }
+            // Si es un delimitador de cierre
+            else if (c == '}' || c == ']' || c == ')')
+            {
+                // Verificamos si la pila está vacía o si no es el delimitador correcto
+                if (pila.Count == 0)
+                {
+                    return false; // Si la pila está vacía, no hay un apertura correspondiente
+                }
+
+                char apertura = pila.Pop(); // Sacamos el último elemento de la pila
+
+                // Comprobamos si el delimitador de cierre corresponde con el de apertura
+                if ((c == '}' && apertura != '{') ||
+                    (c == ']' && apertura != '[') ||
+                    (c == ')' && apertura != '('))
+                {
+                    return false; // Los delimitadores no coinciden
+                }
+            }
+        }
+
+        // Si la pila está vacía al final, la fórmula está balanceada
+        return pila.Count == 0;
+    }
+}
