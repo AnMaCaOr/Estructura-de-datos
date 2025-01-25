@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+
+class TorresDeHanoi
+{
+    // Función para resolver las Torres de Hanoi de manera iterativa utilizando pilas
+    public static void ResolverTorres(int n, Stack<int> origen, Stack<int> auxiliar, Stack<int> destino)
+    {
+        // Si el número de discos es impar, las torres de origen y destino se intercambian
+        if (n % 2 == 1)
+        {
+            Stack<int> temp = auxiliar;
+            auxiliar = destino;
+            destino = temp;
+        }
+
+        // Apilamos todos los discos de la torre origen
+        for (int i = n; i >= 1; i--)
+        {
+            origen.Push(i);
+        }
+
+        // Determinamos el número total de movimientos que debemos realizar
+        int totalMovimientos = (int)Math.Pow(2, n) - 1;
+
+        // Realizamos los movimientos
+        for (int i = 1; i <= totalMovimientos; i++)
+        {
+            if (i % 3 == 1)
+            {
+                MoverDisco(origen, destino);
+            }
+            else if (i % 3 == 2)
+            {
+                MoverDisco(origen, auxiliar);
+            }
+            else
+            {
+                MoverDisco(auxiliar, destino);
+            }
+        }
+    }
+
+    // Función para mover un disco entre dos pilas (torres)
+    public static void MoverDisco(Stack<int> origen, Stack<int> destino)
+    {
+        // Verificamos si la pila de origen tiene discos
+        if (origen.Count > 0)
+        {
+            int disco = origen.Pop();
+            destino.Push(disco);
+            Console.WriteLine($"Mover disco {disco} de {GetNombre(origen)} a {GetNombre(destino)}");
+        }
+    }
+
+    // Función para obtener el nombre de la torre (para mostrar en la consola)
+    public static string GetNombre(Stack<int> torre)
+    {
+        if (torre == torreOrigen) return "Origen";
+        if (torre == torreAuxiliar) return "Auxiliar";
+        return "Destino";
+    }
+
+    // Pilas que representan las tres torres
+    static Stack<int> torreOrigen = new Stack<int>();
+    static Stack<int> torreAuxiliar = new Stack<int>();
+    static Stack<int> torreDestino = new Stack<int>();
+
+    // Función principal
+    public static void Main()
+    {
+        int numDiscos = 3;  // Número de discos en el problema
+
+        Console.WriteLine($"Resolvemos el problema de las Torres de Hanoi con {numDiscos} discos:");
+
+        // Llamamos a la función para resolver el problema
+        ResolverTorres(numDiscos, torreOrigen, torreAuxiliar, torreDestino);
+    }
+}
