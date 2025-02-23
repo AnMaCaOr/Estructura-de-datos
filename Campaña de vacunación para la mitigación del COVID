@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+class Program
+{
+    static void Main()
+    {
+        // 1. Crear conjunto ficticio de 500 ciudadanos
+        HashSet<string> ciudadanos = new HashSet<string>();
+        for (int i = 1; i <= 500; i++)
+        {
+            ciudadanos.Add("Ciudadano" + i);
+        }
+
+        // 2. Crear conjunto ficticio de 75 ciudadanos vacunados con Pfizer
+        HashSet<string> vacunadosPfizer = new HashSet<string>();
+        for (int i = 1; i <= 75; i++)
+        {
+            vacunadosPfizer.Add("CiudadanoPfizer" + i);
+        }
+
+        // 3. Crear conjunto ficticio de 75 ciudadanos vacunados con AstraZeneca
+        HashSet<string> vacunadosAstraZeneca = new HashSet<string>();
+        for (int i = 1; i <= 75; i++)
+        {
+            vacunadosAstraZeneca.Add("CiudadanoAstra" + i);
+        }
+
+        // 4. Listado de ciudadanos que no se han vacunado
+        var noVacunados = ciudadanos.Except(vacunadosPfizer).Except(vacunadosAstraZeneca).ToList();
+
+        // 5. Listado de ciudadanos que han recibido las dos vacunas (simulación)
+        var vacunadosAmbas = new HashSet<string>(vacunadosPfizer);
+        vacunadosAmbas.UnionWith(vacunadosAstraZeneca);
+
+        // 6. Listado de ciudadanos que solamente han recibido la vacuna de Pfizer
+        var soloPfizer = vacunadosPfizer.Except(vacunadosAstraZeneca).ToList();
+
+        // 7. Listado de ciudadanos que solamente han recibido la vacuna de AstraZeneca
+        var soloAstraZeneca = vacunadosAstraZeneca.Except(vacunadosPfizer).ToList();
+
+        // Generar reporte en PDF
+        Document document = new Document();
+        PdfWriter.GetInstance(document, new FileStream("Reporte_Vacunacion.pdf", FileMode.Create));
+        
+        document.Open();
+        
+        document.Add(new Paragraph("Reporte de Vacunación COVID-19"));
+        
+        document.Add(new Paragraph("\nCiudadanos no vacunados:"));
+        foreach (var ciudadano in noVacunados)
+            document.Add(new Paragraph(ciudadano));
+
+        document.Add(new Paragraph("\nCiudadanos que han recibido ambas vacunas:"));
+        foreach (var ciudadano in vacunadosAmbas)
+            document.Add(new Paragraph(ciudadano));
+
+        document.Add(new Paragraph("\nCiudadanos que solamente han recibido la vacuna de Pfizer:"));
+        foreach (var ciudadano in soloPfizer)
+            document.Add(new Paragraph(ciudadano));
+
+        document.Add(new Paragraph("\nCiudadanos que solamente han recibido la vacuna de AstraZeneca:"));
+        foreach (var ciudadano in soloAstraZeneca)
+            document.Add(new Paragraph(ciudadano));
+        
+        document.Close();
+
+        Console.WriteLine("Reporte generado exitosamente.");
+    }
+}
