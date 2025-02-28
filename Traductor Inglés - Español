@@ -1,0 +1,156 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static Dictionary<string, string> espanolIngles = new Dictionary<string, string>()
+    {
+        {"tiempo", "time"},
+        {"persona", "person"},
+        {"año", "year"},
+        {"camino", "way"},
+        {"día", "day"},
+        {"cosa", "thing"},
+        {"hombre", "man"},
+        {"mundo", "world"},
+        {"vida", "life"},
+        {"mano", "hand"},
+        {"parte", "part"},
+        {"niño", "child"},
+        {"niña", "child"},
+        {"ojo", "eye"},
+        {"mujer", "woman"},
+        {"lugar", "place"},
+        {"trabajo", "work"},
+        {"semana", "week"},
+        {"caso", "case"},
+        {"punto", "point"},
+        {"tema", "point"},
+        {"gobierno", "government"},
+        {"empresa", "company"},
+        {"compañía", "company"},
+    };
+
+    static Dictionary<string, string> inglesEspanol = new Dictionary<string, string>()
+    {
+        {"time", "tiempo"},
+        {"person", "persona"},
+        {"year", "año"},
+        {"way", "camino"},
+        {"day", "día"},
+        {"thing", "cosa"},
+        {"man", "hombre"},
+        {"world", "mundo"},
+        {"life", "vida"},
+        {"hand", "mano"},
+        {"part", "parte"},
+        {"child", "niño"},
+        {"eye", "ojo"},
+        {"woman", "mujer"},
+        {"place", "lugar"},
+        {"work", "trabajo"},
+        {"week", "semana"},
+        {"case", "caso"},
+        {"point", "punto"},
+        {"government", "gobierno"},
+        {"company", "empresa"},
+    };
+
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.WriteLine("=======================================================");
+            Console.WriteLine("1. Traducir una frase");
+            Console.WriteLine("2. Ingresar más palabras al diccionario");
+            Console.WriteLine("0. Salir");
+            Console.Write("Seleccione una opción: ");
+            int opcion = Convert.ToInt32(Console.ReadLine());
+
+            switch (opcion)
+            {
+                case 1:
+                    TraducirFrase();
+                    break;
+                case 2:
+                    AgregarPalabras();
+                    break;
+                case 0:
+                    return;
+                default:
+                    Console.WriteLine("Opción inválida. Por favor, seleccione una opción válida.");
+                    break;
+            }
+        }
+    }
+
+    static void TraducirFrase()
+    {
+        Console.Write("Ingrese la frase: ");
+        string frase = Console.ReadLine();
+
+        Console.Write("Seleccione el idioma de origen (1 para español, 2 para inglés): ");
+        int idioma = Convert.ToInt32(Console.ReadLine());
+
+        string[] palabras = frase.Split(' ');
+
+        string fraseTraducida = "";
+
+        if (idioma == 1) // Español a Inglés
+        {
+            foreach (string palabra in palabras)
+            {
+                string palabraSinPuntuacion = palabra.TrimEnd(',', '.', '?', '!', ';', ':');
+                if (espanolIngles.ContainsKey(palabraSinPuntuacion.ToLower()))
+                {
+                    fraseTraducida += espanolIngles[palabraSinPuntuacion.ToLower()] + " ";
+                }
+                else
+                {
+                    fraseTraducida += palabra + " ";
+                }
+
+                if (palabra != palabraSinPuntuacion)
+                {
+                    fraseTraducida = fraseTraducida.TrimEnd() + palabra[palabra.Length - 1] + " ";
+                }
+            }
+        }
+        else if (idioma == 2) // Inglés a Español
+        {
+            foreach (string palabra in palabras)
+            {
+                string palabraSinPuntuacion = palabra.TrimEnd(',', '.', '?', '!', ';', ':');
+                if (inglesEspanol.ContainsKey(palabraSinPuntuacion.ToLower()))
+                {
+                    fraseTraducida += inglesEspanol[palabraSinPuntuacion.ToLower()] + " ";
+                }
+                else
+                {
+                    fraseTraducida += palabra + " ";
+                }
+
+                if (palabra != palabraSinPuntuacion)
+                {
+                    fraseTraducida = fraseTraducida.TrimEnd() + palabra[palabra.Length - 1] + " ";
+                }
+            }
+        }
+
+        Console.WriteLine("Su frase traducida es: " + fraseTraducida.Trim());
+    }
+
+    static void AgregarPalabras()
+    {
+        Console.Write("Ingrese la palabra en español: ");
+        string espanol = Console.ReadLine();
+
+        Console.Write("Ingrese la palabra en inglés: ");
+        string ingles = Console.ReadLine();
+
+        espanolIngles.Add(espanol, ingles);
+        inglesEspanol.Add(ingles, espanol);
+
+        Console.WriteLine("Palabras agregadas con éxito.");
+    }
+}
