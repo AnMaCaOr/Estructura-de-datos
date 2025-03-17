@@ -1,0 +1,143 @@
+using System;
+
+class RevistaTreeNode
+{
+    public string Title { get; set; }
+    public RevistaTreeNode Left { get; set; }
+    public RevistaTreeNode Right { get; set; }
+
+    public RevistaTreeNode(string title)
+    {
+        Title = title;
+        Left = null;
+        Right = null;
+    }
+}
+
+class RevistaCatalog
+{
+    private RevistaTreeNode root;
+
+    public void Insert(string title)
+    {
+        root = InsertRec(root, title);
+    }
+
+    private RevistaTreeNode InsertRec(RevistaTreeNode node, string title)
+    {
+        if (node == null)
+        {
+            return new RevistaTreeNode(title);
+        }
+
+        int comparison = string.Compare(title, node.Title, 
+                              StringComparison.OrdinalIgnoreCase);
+        
+        if (comparison < 0)
+        {
+            node.Left = InsertRec(node.Left, title);
+        }
+        else if (comparison > 0)
+        {
+            node.Right = InsertRec(node.Right, title);
+        }
+        
+        return node;
+    }
+
+    public bool SearchRecursive(string title)
+    {
+        return SearchRec(root, title);
+    }
+
+    private bool SearchRec(RevistaTreeNode node, string title)
+    {
+        if (node == null) return false;
+        
+        int comparison = string.Compare(title, node.Title, 
+                              StringComparison.OrdinalIgnoreCase);
+        
+        if (comparison == 0) return true;
+        
+        return comparison < 0 ? 
+            SearchRec(node.Left, title) : 
+            SearchRec(node.Right, title);
+    }
+
+    public bool SearchIterative(string title)
+    {
+        RevistaTreeNode current = root;
+        
+        while (current != null)
+        {
+            int comparison = string.Compare(title, current.Title, 
+                                  StringComparison.OrdinalIgnoreCase);
+            
+            if (comparison == 0) return true;
+            
+            current = comparison < 0 ? 
+                current.Left : 
+                current.Right;
+        }
+        return false;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        RevistaCatalog catalog = new RevistaCatalog();
+        
+        // Insertar 10 títulos
+        string[] titles = {
+            "National Geographic",
+            "Sociedad y Tecnología",
+            "Time",
+            "Tecnología Educativa",
+            "PC Revista",
+            "Naturaleza, Sociedad y Ambiente",
+            "Ecosistemas",
+            "Byte",
+            "Revista Ciencia",
+            "Ingenius"
+        };
+        
+        foreach (string title in titles)
+        {
+            catalog.Insert(title);
+        }
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("** MENÚ DEL CATÁLOGO **");
+            Console.WriteLine("a. Buscar un título");
+            Console.WriteLine("s. Salir\n");
+            Console.Write("Seleccione opción: ");
+            
+            var key = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            
+            if (char.ToLower(key) == 'a')
+            {
+                Console.Write("\nIngrese el título a buscar: ");
+                string searchTitle = Console.ReadLine();
+                
+                bool foundRecursive = catalog.SearchRecursive(searchTitle);
+                bool foundIterative = catalog.SearchIterative(searchTitle);
+                
+                Console.WriteLine("\nResultados:");
+                Console.WriteLine($"Búsqueda recursiva: {(foundRecursive ? "Encontrado" : "No encontrado")}");
+                Console.WriteLine($"Búsqueda iterativa: {(foundIterative ? "Encontrado" : "No encontrado")}");
+                
+                Console.WriteLine("\nPresione cualquier tecla para continuar...");
+                Console.ReadKey();
+            }
+            else if (char.ToLower(key) == 's')
+            {
+                break;
+            }
+        }
+    }
+}
