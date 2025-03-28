@@ -1,0 +1,210 @@
+using System;
+
+class Program
+{
+    class Node
+    {
+        public int Value;
+        public Node Left, Right;
+
+        public Node(int value)
+        {
+            Value = value;
+            Left = Right = null;
+        }
+    }
+
+    class BinarySearchTree
+    {
+        public Node Root;
+
+        // Insertar un nodo
+        public void Insert(int value)
+        {
+            Root = InsertRec(Root, value);
+        }
+
+        private Node InsertRec(Node root, int value)
+        {
+            if (root == null)
+                return new Node(value);
+
+            if (value < root.Value)
+                root.Left = InsertRec(root.Left, value);
+            else if (value > root.Value)
+                root.Right = InsertRec(root.Right, value);
+
+            return root;
+        }
+
+        // Eliminar un nodo
+        public void Delete(int value)
+        {
+            Root = DeleteRec(Root, value);
+        }
+
+        private Node DeleteRec(Node root, int value)
+        {
+            if (root == null) return root;
+
+            if (value < root.Value)
+                root.Left = DeleteRec(root.Left, value);
+            else if (value > root.Value)
+                root.Right = DeleteRec(root.Right, value);
+            else
+            {
+                if (root.Left == null) return root.Right;
+                if (root.Right == null) return root.Left;
+
+                root.Value = MinValue(root.Right);
+                root.Right = DeleteRec(root.Right, root.Value);
+            }
+
+            return root;
+        }
+
+        private int MinValue(Node root)
+        {
+            int minv = root.Value;
+            while (root.Left != null)
+            {
+                minv = root.Left.Value;
+                root = root.Left;
+            }
+            return minv;
+        }
+
+        // Buscar un nodo
+        public bool Search(int value)
+        {
+            return SearchRec(Root, value) != null;
+        }
+
+        private Node SearchRec(Node root, int value)
+        {
+            if (root == null || root.Value == value)
+                return root;
+
+            if (value < root.Value)
+                return SearchRec(root.Left, value);
+            
+            return SearchRec(root.Right, value);
+        }
+
+        // Recorridos: Preorden
+        public void PreOrder()
+        {
+            PreOrderRec(Root);
+            Console.WriteLine();
+        }
+
+        private void PreOrderRec(Node node)
+        {
+            if (node != null)
+            {
+                Console.Write(node.Value + " ");
+                PreOrderRec(node.Left);
+                PreOrderRec(node.Right);
+            }
+        }
+
+        // Recorridos: Inorden
+        public void InOrder()
+        {
+            InOrderRec(Root);
+            Console.WriteLine();
+        }
+
+        private void InOrderRec(Node node)
+        {
+            if (node != null)
+            {
+                InOrderRec(node.Left);
+                Console.Write(node.Value + " ");
+                InOrderRec(node.Right);
+            }
+        }
+
+        // Recorridos: Postorden
+        public void PostOrder()
+        {
+            PostOrderRec(Root);
+            Console.WriteLine();
+        }
+
+        private void PostOrderRec(Node node)
+        {
+            if (node != null)
+            {
+                PostOrderRec(node.Left);
+                PostOrderRec(node.Right);
+                Console.Write(node.Value + " ");
+            }
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        BinarySearchTree bst = new BinarySearchTree();
+        
+        while (true)
+        {
+            Console.WriteLine("\nMenú de Operaciones:");
+            Console.WriteLine("1. Insertar");
+            Console.WriteLine("2. Eliminar");
+            Console.WriteLine("3. Buscar");
+            Console.WriteLine("4. Recorrido Preorden");
+            Console.WriteLine("5. Recorrido Inorden");
+            Console.WriteLine("6. Recorrido Postorden");
+            Console.WriteLine("7. Salir");
+            
+            Console.Write("Seleccione una opción: ");
+            
+            int option = int.Parse(Console.ReadLine());
+            
+            switch (option)
+            {
+                case 1:
+                    Console.Write("Ingrese el valor a insertar: ");
+                    int insertValue = int.Parse(Console.ReadLine());
+                    bst.Insert(insertValue);
+                    break;
+
+                case 2:
+                    Console.Write("Ingrese el valor a eliminar: ");
+                    int deleteValue = int.Parse(Console.ReadLine());
+                    bst.Delete(deleteValue);
+                    break;
+
+                case 3:
+                    Console.Write("Ingrese el valor a buscar: ");
+                    int searchValue = int.Parse(Console.ReadLine());
+                    bool found = bst.Search(searchValue);
+                    Console.WriteLine(found ? "Valor encontrado." : "Valor no encontrado.");
+                    break;
+
+                case 4:
+                    Console.WriteLine("Recorrido Preorden:");
+                    bst.PreOrder();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Recorrido Inorden:");
+                    bst.InOrder();
+                    break;
+
+                case 6:
+                    Console.WriteLine("Recorrido Postorden:");
+                    bst.PostOrder();
+                    break;
+
+                case 7:
+                    return;
+
+                default:
+                    Console.WriteLine("Opción inválida.");
+                    break;
+            }
+        }
+    }
+}
